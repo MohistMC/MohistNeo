@@ -10,6 +10,40 @@ plugins {
     id 'net.neoforged.gradle.platform' version '7.0.40'
 }
 
+dependencyResolutionManagement {
+    versionCatalogs {
+        libs {
+            version('log4j', '2.20.0')
+            library('log4j-api',  'org.apache.logging.log4j', 'log4j-api' ).versionRef('log4j')
+            library('log4j-core', 'org.apache.logging.log4j', 'log4j-core').versionRef('log4j')
+            library('log4j-iostreams', 'org.apache.logging.log4j', 'log4j-iostreams').versionRef('log4j')
+            library('log4j-slf4j2-impl', 'org.apache.logging.log4j', 'log4j-slf4j2-impl').versionRef('log4j')
+            bundle('log4j', ['log4j-api', 'log4j-core', 'log4j-iostreams', 'log4j-slf4j2-impl'])
+
+            version('adventure', '4.14.0')
+            library('adventure-api', 'net.kyori', 'adventure-api').versionRef('adventure')
+            library('adventure-key', 'net.kyori', 'adventure-key').versionRef('adventure')
+            library('minimessage', 'net.kyori', 'adventure-text-minimessage').versionRef('adventure')
+            library('serializer-gson', 'net.kyori', 'adventure-text-serializer-gson').versionRef('adventure')
+            library('serializer-json', 'net.kyori', 'adventure-text-serializer-json').versionRef('adventure')
+            library('serializer-legacy', 'net.kyori', 'adventure-text-serializer-legacy').versionRef('adventure')
+            library('serializer-plain', 'net.kyori', 'adventure-text-serializer-plain').versionRef('adventure')
+            library('serializer-ansi', 'net.kyori', 'adventure-text-serializer-ansi').versionRef('adventure')
+            library('text-logger-slf4j', 'net.kyori', 'adventure-text-logger-slf4j').versionRef('adventure')
+            library('ansi', 'net.kyori:ansi:1.0.3')
+            library('examination-api', 'net.kyori:examination-api:1.3.0')
+            library('examination-string', 'net.kyori:examination-string:1.3.0')
+            bundle('adventure', ['adventure-api', 'adventure-key', 'minimessage', 'serializer-gson', 'serializer-json', 'serializer-legacy', 'serializer-plain', 'serializer-ansi', 'text-logger-slf4j', 'ansi', 'examination-api', 'examination-string'])
+
+            library('i18n', 'com.mohistmc:i18n:0.4')
+            library('json', 'com.mohistmc:json:0.2')
+            library('tools', 'com.mohistmc:tools:0.2')
+            library('snakeyaml', 'org.yaml:snakeyaml:2.2')
+            library('yaml', 'com.mohistmc:yaml:0.6')
+        }
+    }
+}
+
 rootProject.name = rootDir.name
 
 dynamicProjects {
