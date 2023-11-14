@@ -17,20 +17,16 @@ gradleutils.version {
         suffixBranch = true
     }
 }
-
-changelog {
-    from "20.2"
-    disableAutomaticPublicationRegistration()
-}
-
-// Print version, generally useful to know - also appears on CI
-System.out.println("NeoForge version ${gradleutils.version.toString()}")
-
 allprojects {
-    version gradleutils.version.toString()
+    version '1.20.2'
     group 'net.neoforged'
     repositories {
         mavenLocal()
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+        options.warnings = false // Shutup deprecated for removal warnings
     }
 }
 

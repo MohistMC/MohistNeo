@@ -19,6 +19,5 @@ dynamicProjects {
     project(":base").projectDir = file("projects/base")
     project(":neoforge").projectDir = file("projects/neoforge")
 }
+include 'mohistlauncher'
 
-include ':tests'
-project(":tests").projectDir = file("tests")
