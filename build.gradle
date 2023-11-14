@@ -1,0 +1,83 @@
+plugins {
+    id 'net.neoforged.gradleutils' version '3.0.0-alpha.1' apply false
+    id 'com.diffplug.spotless' version '6.22.0' apply false
+    id 'net.neoforged.licenser' version '0.7.2' apply false
+}
+
+apply plugin: 'net.neoforged.gradleutils'
+
+gradleutils.version {
+    minecraftVersion project.minecraft_version
+    versionPrefix = null // Reset version prefix, which is set by prev. line
+    tags {
+        label = "beta"
+        cleanMarkerLabel = "stable"
+    }
+    branches {
+        suffixBranch = true
+    }
+}
+
+changelog {
+    from "20.2"
+    disableAutomaticPublicationRegistration()
+}
+
+// Print version, generally useful to know - also appears on CI
+System.out.println("NeoForge version ${gradleutils.version.toString()}")
+
+allprojects {
+    version gradleutils.version.toString()
+    group 'net.neoforged'
+    repositories {
+        mavenLocal()
+    }
+}
+
+apply plugin: 'com.diffplug.spotless'
+apply plugin: 'net.neoforged.licenser'
+
+repositories {
+    mavenCentral()
+}
+
+// Put licenser here otherwise it tries to license all source sets including decompiled MC sources
+license {
+    header = file('codeformat/HEADER.txt')
+    skipExistingHeaders = true
+    tasks {
+        neoforge {
+            // Add all NeoForge sources
+            files.from rootProject.fileTree("src", {
+                include "**/*.java"
+            })
+        }
+    }
+}
+
+// Put spotless here because it wants the files to live inside the project root
+spotless {
+    java {
+        target rootProject.fileTree("src", {
+            include "**/*.java"
+        })
+
+        endWithNewline()
+        indentWithSpaces()
+        removeUnusedImports()
+        toggleOffOn()
+        eclipse().configFile file('codeformat/formatter-config.xml')
+        importOrder()
+    }
+    format 'patches', {
+        target rootProject.fileTree("patches")
+
+        custom 'noImportChanges', { String fileContents ->
+            if (fileContents.contains('+import') || fileContents.contains('-import')) {
+                throw new GradleException("Import changes are not allowed in patches!")
+            }
+            return fileContents
+        }
+        bumpThisNumberIfACustomStepChanges(1)
+    }
+}
