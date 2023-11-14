@@ -115,7 +115,7 @@
 -               if (flag1 && !GraphicsEnvironment.isHeadless()) {
 -                  dedicatedserver1.showGui();
 +               if (dedicatedserver1 instanceof DedicatedServer dedicatedServer && flag1 && !GraphicsEnvironment.isHeadless()) {
-+                  dedicatedServer.showGui();
++                  // dedicatedServer.showGui(); // Mohist
                 }
     
                 return dedicatedserver1;
